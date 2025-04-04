@@ -30,7 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
       } else if (e.code == 'wrong-password') {
         errorMessage = "Incorrect password. Try again.";
       }
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(errorMessage)));
     }
   }
 
@@ -46,13 +47,16 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset("assets/images/login.png", height: 150),
-
                 SizedBox(height: 20),
-                Text("Welcome Back!", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87)),
+                Text("Welcome Back!",
+                    style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87)),
                 SizedBox(height: 10),
-                Text("Login to continue", style: TextStyle(fontSize: 16, color: Colors.grey)),
+                Text("Login to continue",
+                    style: TextStyle(fontSize: 16, color: Colors.grey)),
                 SizedBox(height: 40),
-
                 TextField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -60,11 +64,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     fillColor: Colors.white, // White input field background
                     labelText: "Email",
                     prefixIcon: Icon(Icons.email),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
                   ),
                 ),
                 SizedBox(height: 20),
-
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
@@ -73,26 +77,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     fillColor: Colors.white, // White input field background
                     labelText: "Password",
                     prefixIcon: Icon(Icons.lock),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
                   ),
                 ),
                 SizedBox(height: 30),
-
                 ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepOrange,
-                    padding: EdgeInsets.symmetric(horizontal: 100, vertical: 15),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
                   ),
-                  child: Text("Login", style: TextStyle(fontSize: 18, color: Colors.white)),
+                  child: Text("Login",
+                      style: TextStyle(fontSize: 18, color: Colors.white)),
                 ),
-
                 SizedBox(height: 20),
-
                 TextButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SignUpScreen()));
                   },
                   child: Text("Don't have an account? Sign Up"),
                 ),
