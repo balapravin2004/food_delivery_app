@@ -24,7 +24,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
