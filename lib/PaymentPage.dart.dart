@@ -13,7 +13,7 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Payment"),
+        title: Text("Payment"), //adding comment here
         backgroundColor: Colors.orange,
         centerTitle: true,
       ),
