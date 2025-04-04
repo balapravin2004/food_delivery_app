@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'proceed_to_payment_page.dart'; // Import your payment page
 
 class CartPage extends StatefulWidget {
   @override
@@ -73,26 +74,21 @@ class _CartPageState extends State<CartPage> {
                           var item = cartItems[index];
                           Map<String, dynamic> data = item.data() as Map<String, dynamic>;
                           String itemId = item.id;
-                          String name = data.containsKey('name') ? data['name'] ?? 'Unknown Item' : 'Unknown Item';
-                          double price = data.containsKey('price') ? (data['price'] ?? 0).toDouble() : 0;
-                          int quantity = data.containsKey('quantity') ? (data['quantity'] ?? 1).toInt() : 1;
-                          String imageUrl = data.containsKey('image') ? data['image'] : 'https://via.placeholder.com/100';
+                          String name = data['name'] ?? 'Unknown Item';
+                          double price = data['price']?.toDouble() ?? 0;
+                          int quantity = data['quantity']?.toInt() ?? 1;
+                          String imageUrl = data['image'] ?? 'https://via.placeholder.com/100';
 
                           return Card(
                             margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                             elevation: 3,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             child: ListTile(
-                              leading: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  imageUrl,
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Icon(Icons.error, size: 50, color: Colors.red);
-                                  },
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.orange,
+                                child: Text(
+                                  '${index + 1}',
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                                 ),
                               ),
                               title: Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
@@ -141,7 +137,7 @@ class _CartPageState extends State<CartPage> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () => checkout(),
+                              onPressed: () => checkout(totalPrice),
                               style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
                               child: Text("Proceed to Checkout", style: TextStyle(fontSize: 18)),
                             ),
@@ -161,11 +157,7 @@ class _CartPageState extends State<CartPage> {
       removeFromCart(itemId);
       return;
     }
-
-    FirebaseFirestore.instance
-        .collection('cart')
-        .doc(itemId)
-        .update({'quantity': newQuantity}).catchError((error) {
+    FirebaseFirestore.instance.collection('cart').doc(itemId).update({'quantity': newQuantity}).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error updating quantity: $error")),
       );
@@ -180,28 +172,10 @@ class _CartPageState extends State<CartPage> {
     });
   }
 
-  void checkout() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Confirm Checkout"),
-        content: Text("Do you want to proceed with checkout?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text("Cancel"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Checkout feature coming soon!")),
-              );
-            },
-            child: Text("Proceed"),
-          ),
-        ],
-      ),
+  void checkout(double totalPrice) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ProceedToPaymentPage(totalPrice: totalPrice)),
     );
   }
 }
